@@ -13,7 +13,6 @@
   - [Install](#install)
   - [Usage](#usage)
   - [Run tests](#run-tests)
-  - [Deployment](#Deployment)
 - [👥 Authors](#authors)
 - [🔭 Future Features](#future-features)
 - [🤝 Contributing](#contributing)
@@ -107,12 +106,6 @@ Example command:
 ### Run tests
 
 To run tests, run the following command:
-
-n/a
-
-### Deployment
-
-You can deploy this project using:
 
 n/a
 
