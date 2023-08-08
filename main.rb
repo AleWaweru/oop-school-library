@@ -1,21 +1,34 @@
 require_relative 'app'
-require_relative 'menu'
 require_relative 'handle_option'
+
+def switch(user, number)
+  loop do
+    case number
+    when '1'
+      number = user.list_all_books
+    when '2'
+      number = user.list_all_people
+    when '3'
+      number = user.create_a_person
+    when '4'
+      number = user.create_a_book
+    when '5'
+      number = user.create_a_rental
+    when '6'
+      number = user.list_all_rentals_for_a_given_person_id
+    else
+      puts 'Thank you for using this app!'
+      break
+    end
+  end
+end
 
 def main
   app = App.new
-  option = 0
-  until option == 7
-    Menu.display_menu
-    option = Menu.options
-    Option.handle_option(option, app)
-  end
-
-  until option == 7
-    Menu.display_menu
-    option = Menu.options
-    Option.handle_option(option, app)
-  end
+  user = UserInteractions.new(app)
+  puts 'Welcome to School Library App!'
+  number = user.list_numbers
+  switch(user, number)
 end
 
 main
