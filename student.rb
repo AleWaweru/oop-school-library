@@ -10,11 +10,10 @@ class Student < Person
   end
 
   def classroom_label
-    classroom.label if classroom
+    classroom&.label
   end
 
   def play_hooky
     '¯\(ツ)/¯'
   end
 end
-

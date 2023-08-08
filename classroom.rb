@@ -14,4 +14,3 @@ class Classroom
     student.classroom = self
   end
 end
-

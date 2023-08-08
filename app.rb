@@ -69,13 +69,13 @@ class App
     print 'Has parent permission? [Y/N]: '
     parent = gets.chomp
     permission = %w[Y y].include?(parent)
-    label = 'math'  
+    label = 'math'
     classroom = Classroom.new(label)
     student = Student.new(classroom, age, name: name, parent_permission: permission)
-    classroom.add_student(student) 
+    classroom.add_student(student)
     student
   end
-  
+
   def create_a_teacher(name, age)
     print 'Specialization: '
     specialization = gets.chomp
