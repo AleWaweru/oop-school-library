@@ -44,14 +44,8 @@ class App
     print 'Has parent permission? [Y/N]: '
     permission = gets.chomp.upcase
 
-    case permission
-    when 'N'
-      student = Student.new(age, 'classroom', name: name, parent_permission: false)
-      @people << student
-    when 'Y'
-      student = Student.new(age, 'classroom', name: name, parent_permission: true)
-      @people << student
-    end
+    student = Student.new(age, 'classroom', name: name, parent_permission: permission == 'Y')
+    @people << student
     puts 'Student created successfully'
   end
 
@@ -62,7 +56,7 @@ class App
     age = gets.chomp.to_i
     print 'Enter Specialization: '
     specialization = gets.chomp
-    teacher = Teacher.new(age, specialization, name: name) # Correct order: age, specialization, **defaults
+    teacher = Teacher.new(age, specialization, name: name)
     @people << teacher
     puts 'Teacher created successfully'
   end
@@ -93,7 +87,7 @@ class App
 
     rental = Rental.new(date, books[book_id], people[person_id])
     @rentals << rental
-    puts 'created a rental.'
+    puts 'Created a rental.'
   end
 
   def list_all_rentals
