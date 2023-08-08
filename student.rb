@@ -1,24 +1,19 @@
 require_relative 'person'
 
 class Student < Person
-  attr_reader :classroom, :id
+  attr_accessor :classroom
 
-  def initialize(age, classroom, **defaults)
-    @id = rand(10..100)
-    defaults[:name] ||= 'Unknown'
-    defaults[:parent_permission] = true if defaults[:parent_permission].nil?
-    name = defaults.delete(:name) # Remove the :name key from defaults
-    super(age, **defaults)
+  def initialize(classroom, age, name: 'Unknown', parent_permission: true)
+    super(age, name: name, parent_permission: parent_permission)
     @classroom = classroom
-    @name = name # Set the name separately after calling super
+    classroom&.add_student(self)
   end
 
-  def assign_classroom=(classroom)
-    @classroom = classroom
-    classroom.students.push(self) unless classroom.students.include?(self)
+  def classroom_label
+    classroom&.label
   end
 
   def play_hooky
-    '¯(ツ)/¯'
+    '¯\(ツ)/¯'
   end
 end
