@@ -3,14 +3,28 @@ require_relative 'Student'
 require_relative 'teacher'
 require_relative 'rental'
 require_relative 'classroom'
+require 'json'
 
 class App
   def initialize
     @books = []
     @people = []
     @rentals = []
+    load_data
+  end
+  # +++++++++++++++++++++++++++++++++++++++++++
+  def save_data
+    save_to_json(@books, 'storage/books.json')
+    save_to_json(@people, 'storage/people.json')
+    save_to_json(@rentals, 'storage/rentals.json')
   end
 
+  def load_data
+    @books = load_from_json('storage/books.json', Book)
+    @people = load_from_json('storage/people.json', Person)
+    @rentals = load_from_json('storage/rentals.json', Rental)
+  end
+  # ++++++++++++++++++++++++++++++++++++++++++
   def list_all_books
     puts(@books.map { |book| "Title: \"#{book.title}\", Author: #{book.author}" })
   end
@@ -93,4 +107,22 @@ class App
       puts "#{index}) [#{person.type}] Name: #{person.name} ID: #{person.id}, Age: #{person.age}"
     end
   end
+
+  # ===========================================
+  private
+
+  def save_to_json(data, filename)
+    serialized_data = data.map(&:to_hash)
+    File.open(filename, 'w') do |file|
+      file.write(JSON.generate(serialized_data))
+    end
+  end
+
+  def load_from_json(filename, klass)
+    return [] unless File.exist?(filename)
+
+    json_data = JSON.parse(File.read(filename))
+    json_data.map { |hash| klass.new(**hash) }
+  end
+  # =======================
 end

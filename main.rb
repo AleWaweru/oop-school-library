@@ -18,6 +18,7 @@ def switch(user, number)
       number = user.list_all_rentals_for_a_given_person_id
     else
       puts 'Thank you for using this app!'
+      user.app.save_data
       break
     end
   end
