@@ -56,11 +56,9 @@ class App
     save_json(@rentals, RENTALS_FILE)
   end
 
-
   def save_json(data, file_path)
     dir_path = File.dirname(file_path)
     FileUtils.mkdir_p(dir_path)
     File.write(file_path, JSON.generate(data.map(&:to_h)))
   end
-
 end
