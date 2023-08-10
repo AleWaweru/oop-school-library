@@ -142,7 +142,7 @@ class App
 
   def load_from_json(filename, klass)
     return [] unless File.exist?(filename)
-  
+
     json_data = JSON.parse(File.read(filename))
     if klass.is_a?(Class)
       if klass == Book
@@ -167,21 +167,21 @@ class App
     puts "Error parsing JSON in #{filename}: #{e.message}"
     []
   end
-  
+
   def load_book_from_json(book_hash)
     Book.new(book_hash['title'], book_hash['author'])
   end
-  
+
   def load_person_from_json(person_hash)
     if person_hash['type'] == 'Student'
-      Student.new(Classroom.new('math'), person_hash['age'], name: person_hash['name'], parent_permission: person_hash['parent_permission'])
+      Student.new(Classroom.new('math'), person_hash['age'], name: person_hash['name'],
+                                                             parent_permission: person_hash['parent_permission'])
     elsif person_hash['type'] == 'Teacher'
-      Teacher.new(person_hash['specialization'], person_hash['age'], name: person_hash['name'], parent_permission: person_hash['parent_permission'])
-    else
-      nil
+      Teacher.new(person_hash['specialization'], person_hash['age'], name: person_hash['name'],
+                                                                     parent_permission: person_hash['parent_permission'])
     end
   end
-  
+
 
   # Update the load_data method to pass the correct arguments
   # def load_from_json(filename, klass)
