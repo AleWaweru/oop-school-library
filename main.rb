@@ -26,6 +26,7 @@ end
 
 def main
   app = App.new
+  app.load_data
   user = UserInteractions.new(app)
   puts 'Welcome to School Library App!'
   number = user.list_numbers

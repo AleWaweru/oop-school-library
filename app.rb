@@ -7,10 +7,11 @@ require 'json'
 
 class App
   def initialize
+    load_data
     @books = []
     @people = []
     @rentals = []
-    load_data
+    
   end
   # +++++++++++++++++++++++++++++++++++++++++++
   def save_data
@@ -112,17 +113,70 @@ class App
   private
 
   def save_to_json(data, filename)
-    serialized_data = data.map(&:to_hash)
+    existing_data = load_from_json(filename, []) || []
+  
+    if data.nil?
+      puts ""
+      return
+    end
+  
+    updated_data = existing_data + data.map(&:to_hash)
+  
+    unique_key = case data.first
+                 when Book
+                   'title'
+                 when Person
+                   'id'
+                 when Rental
+                   'date'
+                 else
+                   nil
+                 end
+  
+    if unique_key
+      unique_data = updated_data.uniq { |item| item[unique_key] }
+    else
+      unique_data = updated_data
+    end
+  
     File.open(filename, 'w') do |file|
-      file.write(JSON.generate(serialized_data))
+      file.write(JSON.generate(unique_data))
+    end
+  end
+  
+  def load_from_json(filename, klass)
+    begin
+      return [] unless File.exist?(filename)
+      json_data = JSON.parse(File.read(filename))
+      if klass.is_a?(Class)
+        if klass == Book
+          json_data.map { |hash| klass.new(hash['title'], hash['author']) }
+        elsif klass == Person
+          json_data.map { |hash| klass.new(hash['type'], hash['age'], name: hash['name'], parent_permission: hash['parent_permission']) }
+        end
+      else
+        json_data
+      end
+    rescue JSON::ParserError => e
+      puts "Error parsing JSON in #{filename}: #{e.message}"
+      []
     end
   end
 
-  def load_from_json(filename, klass)
-    return [] unless File.exist?(filename)
-
-    json_data = JSON.parse(File.read(filename))
-    json_data.map { |hash| klass.new(**hash) }
-  end
+  # def load_from_json(filename, klass)
+  #   begin
+  #     return [] unless File.exist?(filename)
+  #     json_data = JSON.parse(File.read(filename))
+  #     if klass.is_a?(Class)
+  #       json_data.map { |hash| klass.new(**hash) }
+  #     else
+  #       json_data
+  #     end
+  #   rescue JSON::ParserError => e
+  #     puts "Error parsing JSON in #{filename}: #{e.message}"
+  #     []
+  #   end
+  # end
+   
   # =======================
 end

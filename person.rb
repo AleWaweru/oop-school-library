@@ -1,13 +1,14 @@
 require_relative 'nameable'
 
 class Person < Nameable
-  def initialize(age, name: 'Unknown', parent_permission: true)
+  def initialize(type, age, name: 'Unknown', parent_permission: true)
     super()
     @id = Random.rand(1..200)
     @name = name
     @age = age
     @parent_permission = parent_permission
     @rentals = []
+    @type = type
   end
 
   attr_accessor :name, :age, :type
@@ -24,6 +25,16 @@ class Person < Nameable
 
   def can_use_services?
     of_age? || @parent_permission
+  end
+
+  def to_hash
+    { 
+      'type' => @type,
+      'name' => @name,
+      'age' => @age,
+      'parent_permission' => @parent_permission,
+      'rentals' => @rentals.map { |rental| { 'date' => rental.date }}
+    }
   end
 
   private
