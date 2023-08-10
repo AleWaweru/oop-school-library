@@ -111,33 +111,32 @@ class App
   end
 
   # ===========================================
-
   def save_to_json(data, filename)
     existing_data = load_from_json(filename, []) || []
+    return if data.nil?
 
-    if data.nil?
-      puts ''
-      return
-    end
+    updated_data = combine_data(existing_data, data)
+    unique_data = find_unique_data(updated_data, data.first)
 
-    updated_data = existing_data + data.map(&:to_hash)
+    write_data_to_file(filename, unique_data)
+  end
 
-    unique_key = case data.first
-                 when Book
-                   'title'
-                 when Person
-                   'id'
-                 when Rental
-                   'date'
+  def combine_data(existing_data, new_data)
+    existing_data + new_data.map(&:to_hash)
+  end
+
+  def find_unique_data(data, first_item)
+    unique_key = case first_item
+                 when Book then 'title'
+                 when Person then 'id'
+                 when Rental then 'date'
                  end
 
-    unique_data = if unique_key
-                    updated_data.uniq { |item| item[unique_key] }
-                  else
-                    updated_data
-                  end
+    unique_key ? data.uniq { |item| item[unique_key] } : data
+  end
 
-    File.write(filename, JSON.generate(unique_data))
+  def write_data_to_file(filename, data)
+    File.write(filename, JSON.generate(data))
   end
 
   def load_from_json(filename, klass)
@@ -174,39 +173,16 @@ class App
 
   def load_person_from_json(person_hash)
     if person_hash['type'] == 'Student'
-      Student.new(Classroom.new('math'), person_hash['age'], name: person_hash['name'],
-                                                             parent_permission: person_hash['parent_permission'])
+      Student.new(Classroom.new('math'),
+                  person_hash['age'],
+                  name: person_hash['name'],
+                  parent_permission: person_hash['parent_permission'])
     elsif person_hash['type'] == 'Teacher'
-      Teacher.new(person_hash['specialization'], person_hash['age'], name: person_hash['name'],
-                                                                     parent_permission: person_hash['parent_permission'])
+      Teacher.new(person_hash['specialization'], person_hash['age'],
+                  name: person_hash['name'],
+                  parent_permission: person_hash['parent_permission'])
     end
   end
-
-
-  # Update the load_data method to pass the correct arguments
-  # def load_from_json(filename, klass)
-  #   begin
-  #     return [] unless File.exist?(filename)
-
-  #     json_data = JSON.parse(File.read(filename))
-  #     if klass.is_a?(Class)
-  #       if klass == Book
-  #         json_data.map { |hash| klass.new(hash['title'], hash['author']) }
-  #       elsif klass == Person
-  #         json_data.map { |hash| klass.new(hash['type'], hash['age'], name: hash['name'], parent_permission: hash['parent_permission']) }
-  #       else
-  #         json_data.map { |hash| klass.new(**hash) }
-  #       end
-  #     else
-  #       json_data
-  #     end
-  #   rescue JSON::ParserError => e
-  #     puts "Error parsing JSON in #{filename}: #{e.message}"
-  #     []
-  #   end
-  # end
-
-
 
   # =======================
 end
