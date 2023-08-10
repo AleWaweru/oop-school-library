@@ -18,12 +18,12 @@ class Student < Person
   end
 
   def to_hash
-    { 
+    {
       'type' => 'Student',
       'name' => @name,
       'age' => @age,
       'parent_permission' => @parent_permission,
-      'rentals' => @rentals.map { |rental| { 'date' => rental.date }}
+      'rentals' => @rentals.map { |rental| { 'date' => rental.date } }
     }
   end
 end
