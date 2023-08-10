@@ -144,31 +144,16 @@ class App
     end
   end
   
-  def load_from_json(filename, klass)
-    begin
-      return [] unless File.exist?(filename)
-      json_data = JSON.parse(File.read(filename))
-      if klass.is_a?(Class)
-        if klass == Book
-          json_data.map { |hash| klass.new(hash['title'], hash['author']) }
-        elsif klass == Person
-          json_data.map { |hash| klass.new(hash['type'], hash['age'], name: hash['name'], parent_permission: hash['parent_permission']) }
-        end
-      else
-        json_data
-      end
-    rescue JSON::ParserError => e
-      puts "Error parsing JSON in #{filename}: #{e.message}"
-      []
-    end
-  end
-
   # def load_from_json(filename, klass)
   #   begin
   #     return [] unless File.exist?(filename)
   #     json_data = JSON.parse(File.read(filename))
   #     if klass.is_a?(Class)
-  #       json_data.map { |hash| klass.new(**hash) }
+  #       if klass == Book
+  #         json_data.map { |hash| klass.new(hash['title'], hash['author']) }
+  #       elsif klass == Person
+  #         json_data.map { |hash| klass.new(hash['type'], hash['age'], name: hash['name'], parent_permission: hash['parent_permission']) }
+  #       end
   #     else
   #       json_data
   #     end
@@ -177,6 +162,54 @@ class App
   #     []
   #   end
   # end
-   
+
+  # Update the load_from_json method to accept both filename and klass
+def load_from_json(filename, klass)
+  begin
+    return [] unless File.exist?(filename)
+
+    json_data = JSON.parse(File.read(filename))
+    if klass.is_a?(Class)
+      if klass == Book
+        json_data.map { |hash| klass.new(hash['title'], hash['author']) }
+      elsif klass == Person
+        json_data.map { |hash| klass.new(hash['type'], hash['age'], name: hash['name'], parent_permission: hash['parent_permission']) }
+      else
+        json_data.map { |hash| klass.new(**hash) }
+      end
+    else
+      json_data
+    end
+  rescue JSON::ParserError => e
+    puts "Error parsing JSON in #{filename}: #{e.message}"
+    []
+  end
+end
+
+# Update the load_data method to pass the correct arguments
+  # def load_from_json(filename, klass)
+  #   begin
+  #     return [] unless File.exist?(filename)
+
+  #     json_data = JSON.parse(File.read(filename))
+  #     if klass.is_a?(Class)
+  #       if klass == Book
+  #         json_data.map { |hash| klass.new(hash['title'], hash['author']) }
+  #       elsif klass == Person
+  #         json_data.map { |hash| klass.new(hash['type'], hash['age'], name: hash['name'], parent_permission: hash['parent_permission']) }
+  #       else
+  #         json_data.map { |hash| klass.new(**hash) }
+  #       end
+  #     else
+  #       json_data
+  #     end
+  #   rescue JSON::ParserError => e
+  #     puts "Error parsing JSON in #{filename}: #{e.message}"
+  #     []
+  #   end
+  # end
+
+  
+
   # =======================
 end

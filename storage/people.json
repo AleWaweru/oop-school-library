@@ -1,1 +1,1 @@
-[{"type":"Student","name":"billy","age":"23","parent_permission":true,"rentals":[]}]
+[{"type":"Teacher","name":"olag","age":"56","specialization":"marine","parent_permission":"marine"}]
