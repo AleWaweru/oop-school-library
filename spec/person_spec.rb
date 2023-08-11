@@ -3,7 +3,6 @@ require 'date'
 require_relative '../classes/person'
 require_relative '../classes/book'
 
-
 describe Person do
   subject(:person) { described_class.new(25, name: 'Alice', parent_permission: true) }
 
