@@ -115,14 +115,13 @@ n/a
 
 ## 👥 Authors <a name="authors"></a>
 
-👤 **Author1**
+👤 **Alex**
 
 - GitHub: [@githubhandle](https://github.com/AleWaweru/)
 - Twitter: [@twitterhandle](https://twitter.com/ngashalex)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/alex-ng-ang-a-waweru-2b2701180/)
 
-
-👤 **Author2**
+👤 **Toyman**
 
 - GitHub: [@toyman640](https://github.com/toyman640)
 - Twitter: [@_toyman](https://twitter.com/_toyman)
